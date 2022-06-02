@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>쇼핑몰 프로젝트</title>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+		<link rel="stylesheet" href="/shop/css/common.css"/>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+		<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+		<script src="https://unpkg.com/vue-router@3.5.3/dist/vue-router.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+		<script src="/shop/js/common.js"></script>
+		<script src="/shop/js/request.js"></script>
+		<!-- Smart Editor -->
+		<script type="text/javascript" src="/shop/editor/js/HuskyEZCreator.js" charset="utf-8"></script>
+		<!-- 우편번호 검색 -->
+		<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+		<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+		<!-- Import 결제 -->
+		<script src="/shop/js/import.js"></script>
+		<script>
+			init();
+	
+			async function init(){
+				try{
+					await httpRequest({
+						url: "user/get/info",
+						method: "GET",
+						responseType: "json"
+					})
+					.then((rs) => {
+						ROLE_NAME = rs.data.userInfo.ROLE_NAME;
+						NAME = rs.data.userInfo.NAME;
+						console.log(ROLE_NAME);
+					})
+					.catch((error) => {
+						console.log(error);
+					});
+				} catch(err){
+					console.log(err);
+				}
+			}
+		</script>
+	</head>
+	<body oncontextmenu="return false">
+		<div id="main">
+			<!-- Header (Login) -->
+			<div id="header">
+				<header-bar></header-bar>
+			</div>
+			
+			<!-- Nav -->
+			<div id="nav">
+				<nav-bar></nav-bar>
+			</div>
+			
+			<!-- 본문 -->
+			<div id="main-view">
+				<router-view></router-view>
+			</div>
+			
+			<!-- Footer -->
+			<div id="footer" class="mt-5">
+				 <footer-bar></footer-bar>
+			</div>
+			
+			<!-- Loading -->
+			<div id="modal-loading" class="modal-loading display-none">
+				<img src="/shop/images/loading.gif" class="wrap-loading"/>
+			</div>
+  		</div>
+	</body>
+	<script src="/shop/layouts/nav_bar.js"></script>
+	<script src="/shop/layouts/header_bar.js"></script>
+	<script src="/shop/layouts/footer_bar.js"></script>
+	
+	<!-- Common -->
+	<script src="/shop/layouts/select_box.js"></script>
+	<script src="/shop/layouts/pagenation.js"></script>
+	<script src="/shop/layouts/tot_price.js"></script>
+	<script src="/shop/layouts/scope_star.js"></script>
+	<script src="/shop/layouts/file_upload.js"></script>
+	<script src="/shop/layouts/address_form.js"></script>
+	
+	<!-- Main -->
+	<script src="/shop/components/main_product.js"></script>
+	<script src="/shop/components/main_category.js"></script>
+	<script src="/shop/components/main_bbs.js"></script>
+	<script src="/shop/components/index.js"></script>
+	
+	<!-- Login / Join -->
+	<script src="/shop/components/login/login_form.js"></script>
+	<script src="/shop/components/login/logout_form.js"></script>
+	<script src="/shop/components/login/join_form.js"></script>
+	
+	<!-- Product -->
+	<script src="/shop/components/product/product_list.js"></script>
+	<script src="/shop/components/product/product_list_category.js"></script>
+	<script src="/shop/components/product/product_detail.js"></script>
+	<script src="/shop/components/product/product_review.js"></script>
+	<script src="/shop/components/product/product_review_write.js"></script>
+	<script src="/shop/components/product/product_qna.js"></script>
+	
+	<!-- Mypage -->
+	<script src="/shop/components/mypage/basket.js"></script>
+	<script src="/shop/components/mypage/mypage.js"></script>
+	<script src="/shop/components/mypage/mypage_order.js"></script>
+	<script src="/shop/components/mypage/mypage_member_info.js"></script>
+	<script src="/shop/components/mypage/member_info_change.js"></script>
+	
+	<!-- Bbs -->
+	<script src="/shop/components/bbs/notice.js"></script>
+	<script src="/shop/components/bbs/notice_detail.js"></script>
+	<script src="/shop/components/bbs/faq.js"></script>
+	
+	<!-- Pay -->
+	<script src="/shop/components/pay/pay_list.js"></script>
+	<script src="/shop/components/pay/order_list.js"></script>
+	
+	<!-- Admin Product-->
+	<script src="/shop/components/admin/product/admin_product_list.js"></script>
+	<script src="/shop/components/admin/product/admin_product_size_list.js"></script>
+	<script src="/shop/components/admin/product/admin_product_size_change.js"></script>
+	<script src="/shop/components/admin/product/admin_product_manage.js"></script>
+	<script src="/shop/components/admin/product/admin_statistics.js"></script>
+	
+	<!-- Admin Order -->
+	<script src="/shop/components/admin/order/admin_order_list.js"></script>
+	
+	<!-- Admin Bbs -->
+	<script src="/shop/components/admin/bbs/admin_bbs_write.js"></script>
+	<script src="/shop/components/admin/bbs/admin_bbs_manage.js"></script>
+	
+	<!-- Router -->
+	<script src="/shop/router/router.js"></script>
+</html>
