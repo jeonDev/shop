@@ -131,7 +131,12 @@ const basketComponent = Vue.component('basket-form', {
 				this.basketList = rs.data.basketList;
 			})
 			.catch((error) => {
+				console.log(error);
 				alert(error.data.message);
+				
+				if(error.status == "401"){
+					//this.$router.push({name: "login-form"});
+				}
 			});
 		},
 		// 체크박스 전체 선택 및 해제

@@ -12,9 +12,6 @@ const adminOrderComponent = Vue.component('admin-order-form', {
 						<select-box :obj="paymentStateObj"
 							@input="changePaymentState"/>
 					</div>
-					<div class="p-2">
-						<button class="btn btn-dark">주문관리</button>
-					</div>
 				</div>
 				
 				<div>

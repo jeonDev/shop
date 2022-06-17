@@ -35,6 +35,7 @@ Vue.component('product-list-category-form', {
 				responseType: "json"
 			})
 			.then((rs) => {
+				console.log(rs);
 				this.categoryList = rs.data.categoryList;
 			})
 			.catch((error) => {

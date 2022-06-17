@@ -139,12 +139,14 @@ const joinComponent = Vue.component('join-form', {
 				params: data
 			})
 			.then((rs) => {
+				console.log("인증번호 : " + rs.data.certNum);
 				if(rs.data.code == '0000'){
 					alert(rs.data.msg);
 				}
 				this.user.certSeq = rs.data.certSeq;
 			})
 			.catch((error) => {
+				console.log(error);
 				alert(error.data.message);
 			})
 		},

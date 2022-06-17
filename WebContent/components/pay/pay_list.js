@@ -51,16 +51,16 @@ const payListComponent = Vue.component('pay-list-form', {
 										</div>
 									</div>
 								</td>
-								<td class="text-center align-middle">{{ item.TOT_PRICE.toLocaleString('ko-KR') }}</td>
-								<td class="text-center align-middle">{{ item.PRODUCT_CNT.toLocaleString('ko-KR') }}</td>
+								<td class="text-center align-middle">{{ Number(item.TOT_PRICE).toLocaleString('ko-KR') }}</td>
+								<td class="text-center align-middle">{{ Number(item.PRODUCT_CNT).toLocaleString('ko-KR') }}</td>
 								<td class="text-center align-middle">
-									<span v-if="item.DISCOUNT_YN == 'Y'">{{ item.PRICE_DISCOUNT.toLocaleString('ko-KR') }}%</span>
+									<span v-if="item.DISCOUNT_YN == 'Y'">{{ Number(item.PRICE_DISCOUNT).toLocaleString('ko-KR') }}%</span>
 									<span v-else>-</span>
 								</td>
 								<td class="text-center align-middle">배송비 무료</td>
 								<td class="text-center align-middle">
-									<span>{{ item.FINAL_PRICE.toLocaleString('ko-KR') }}</span>
-									<span class="text-secondary" style="font-size:10px" v-if="item.PRICE_DISCOUNT > 0"><del>{{ item.TOT_PRICE.toLocaleString('ko-KR') }}</del></span>
+									<span>{{ Number(item.FINAL_PRICE).toLocaleString('ko-KR') }}</span>
+									<span class="text-secondary" style="font-size:10px" v-if="item.PRICE_DISCOUNT > 0"><del>{{ Number(item.TOT_PRICE).toLocaleString('ko-KR') }}</del></span>
 								</td>
 							</tr>
 						</tbody>
@@ -294,7 +294,7 @@ const payListComponent = Vue.component('pay-list-form', {
 				
 				// import 결제 진행.
 				// 실제 결제 시, Test 제거
-				paymentImportTest(rs.data.orderInfo, data);
+				paymentImport(rs.data.orderInfo, data);
 				
 			})
 			.catch((error) => {

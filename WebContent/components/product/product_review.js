@@ -31,8 +31,8 @@ const productReviewComponent = Vue.component('product-review-form', {
 									({{ item.SCOPE }} / 5)
 								</h4>
 							</div>
-							<div class="p-3">
-								{{item.TITLE}}
+							<div class="p-3" v-html="item.TITLE">
+								
 							</div>
 							<div class="p-3" v-if="item.REVIEW_TYPE='PR002'">
 								<img class="img-rounded w-25" :src="img" v-for="img in reviewImgs(item.FILE_SRC, item.FILE_REAL_NM)"/>
@@ -138,6 +138,10 @@ const productReviewComponent = Vue.component('product-review-form', {
 				this.reviewList = rs.data.reviewList;
 				this.page = rs.data.page;
 				this.reviewScope = rs.data.reviewScope;
+				
+				$.each(this.reviewList, function(idx, item){
+					item.TITLE = item.TITLE.replace(/(?:\r\n|\r|\n)/g, '<br />');
+				});
 			})
 			.catch((error) => {
 				console.log(error);

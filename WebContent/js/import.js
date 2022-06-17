@@ -60,9 +60,7 @@ function paymentCallback(paymentYn, obj, rsp) {
 		if(rsp.success){
 			msg = '결제가 완료되었습니다.';
 			alert(msg);
-			// 페이지 이동
-			
-			console.log("페이지이동!!!!! / 다시 돌아오지 못하게 해야하는데 어떻게?");
+			$(location).attr('href', '/shop/mypage');
 		} else {
 			msg = rsp.error_msg;
 			alert(msg);

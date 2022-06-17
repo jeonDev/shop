@@ -1,4 +1,6 @@
 const server = "http://localhost:8081/";
+// const server = "http://43.200.39.6:8081/";
+
 //정규식 체크
 let idReg = /^[a-zA-Z0-9]{4,30}$/g;									// ID 정규식 (영문 숫자 4~30자)
 let psReg = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z/d@$!%*?&]{8,30}$/;	// Password 정규식(영문 + 숫자 4~30자)

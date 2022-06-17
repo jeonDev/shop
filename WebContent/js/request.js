@@ -45,13 +45,8 @@ httpRequest.interceptors.response.use(
 				
 				if(rs.data.code == "0000"){
 					let token = rs.data.accessToken;
-					// console.log(token);
-					localStorage.setItem("Authorization", token);
 					
-					/*
-					안되는 원인!
-						
-					*/
+					localStorage.setItem("Authorization", token);
 					
 					configHeaders["Authorization"] = "Bearer " + localStorage.getItem("Authorization", token);
 					
@@ -68,15 +63,6 @@ httpRequest.interceptors.response.use(
 				
 				console.log(error);
 			});
-			
-			
-		} else if(error.response.status === 401) {
-			
-			alert(error.data.message);
-				
-			if(error.status == "401"){
-				this.$router.push({name: "login-form"});
-			}
 		}
 		
 		$('#modal-loading').addClass('display-none');
