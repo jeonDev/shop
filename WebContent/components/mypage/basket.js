@@ -60,7 +60,7 @@ const basketComponent = Vue.component('basket-form', {
 													<span>옵션 : </span>
 													<span>{{ item.PRODUCT_SIZE }}</span>
 													<span> / {{ item.STOCK_CHK_NM }}</span>
-													<span v-if="item.DISCOUNT_YN == 'Y'"> / {{ item.PRICE_DISCOUNT }}% 할인 중.</span>
+													<span v-if="item.PRICE_DISCOUNT > 0"> / {{ item.PRICE_DISCOUNT }}% 할인 중.</span>
 												</div>
 											</router-link>
 										</div>
@@ -68,7 +68,7 @@ const basketComponent = Vue.component('basket-form', {
 								</td>
 								<td class="text-center align-middle">
 									<span>{{ item.FINAL_PRICE.toLocaleString('ko-KR') }}</span>
-									<span class="text-secondary" style="font-size:10px" v-if="item.DISCOUNT_YN == 'Y'">
+									<span class="text-secondary" style="font-size:10px" v-if="item.PRICE_DISCOUNT > 0">
 										<del>{{ item.TOT_PRICE.toLocaleString('ko-KR') }}</del>
 									</span>
 								</td>
@@ -98,9 +98,8 @@ const basketComponent = Vue.component('basket-form', {
 				<div>
 					<ul class="text-secondary" style="font-size: 12px;">
 						<li>SHOP은 전 상품 무료 배송입니다.</li>
-						<li>2개 이상의 브랜드를 주문하신 경우, 개별 배송됩니다.</li>
 						<li>결제 시 각종 할인 적용이 달라질 수 있습니다.</li>
-						<li>장바구니 상품은 최대 1년 보관(비회원 2일)되며 담은 시점과 현재의 판매 가격이 달라질 수 있습니다.</li>
+						<li>장바구니 상품은 담은 시점과 현재의 판매 가격이 달라질 수 있습니다.</li>
 					</ul>
 				</div>
 			</div>
@@ -135,7 +134,7 @@ const basketComponent = Vue.component('basket-form', {
 				alert(error.data.message);
 				
 				if(error.status == "401"){
-					//this.$router.push({name: "login-form"});
+					this.$router.push({name: "login-form"});
 				}
 			});
 		},
@@ -242,9 +241,12 @@ const basketComponent = Vue.component('basket-form', {
 		buyProduct(){
 			let buyCnt = 0;
 			let data = [];
+			let chkData = [];
 			$.each(this.basketList, function(idx, item){
 				if(item.CHK_YN) {
 					buyCnt++;
+					chkData.push({"product_no" : item.PRODUCT_NO
+							, "product_cnt" : item.PRODUCT_CNT});
 					data.push({"basket_no" : item.BASKET_NO});
 				}
 			});
@@ -256,7 +258,19 @@ const basketComponent = Vue.component('basket-form', {
 			} else{
 				if(confirm(buyCnt + "건의 상품을 구매하시겠습니까?")){
 					
-					this.$router.push({name: "pay-list-form", params:{payInfo: "basket"}, query: {productPayInfo: JSON.stringify(data)} });
+					httpRequest({
+						url: "product/stock/check",
+						method: "POST",
+						responseType: "json",
+						data: chkData
+					})
+					.then((rs) => {
+						this.$router.push({name: "pay-list-form", params:{payInfo: "basket"}, query: {productPayInfo: JSON.stringify(data)} });
+					})
+					.catch((error) => {
+						alert(error.data.message);
+					});
+					
 				}
 			}
 		},

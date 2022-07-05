@@ -14,6 +14,10 @@ Vue.component('main-bbs', {
 			<hr class="mt-0">
 			<div>
 				<table class="table table-bordered">
+					<colGroup>
+						<col width="80%">
+						<col width="20%">
+					</colGroup>
 					<tbody>
 						<tr v-for="(item, idx) in noticeList"
 							@click="noticeDetail(item.BBS_NO)">

@@ -97,6 +97,12 @@ const adminStatisticsComponent = Vue.component('admin-statistics-form', {
 										{{item.CNT.toLocaleString('ko-KR')}}
 									</td>
 								</tr>
+								<tr>
+									<td class="font-weight-bold">판매금액</td>
+									<td v-for="(item, idx) in sexList">
+										{{item.BUY_PRICE.toLocaleString('ko-KR')}}
+									</td>
+								</tr>
 							</tbody>
 						</table>
 					</div>

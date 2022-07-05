@@ -12,17 +12,24 @@ const productListComponent = Vue.component('product-list-form', {
 				<div id="product-list" class="list-group list-group-horizontal justify-content-center" style="flex-wrap:wrap">
 					<div v-for="(item, idx) in productList" class="list-group-item w-30 m-2">
 						<router-link :to="{name: 'product-detail-form', params: { productId : item.PRODUCT_ID } }" class="a">
-							<div>
+							<div style="position: relative;">
 								<img :src="imgSrc(item.IMG_SRC)" class="img-fluid p-1" style="width: 400px; height : 350px;" onerror="this.src='/shop/images/img_error.png'">
+								<div style="position: absolute; top:0; left: 0;" class="w-100 h-100" v-if="item.PRODUCT_CNT == 0">
+									<img src="/shop/images/soldout.png" class="w-100 h-100" style="opacity: 0.5"/>
+								</div>
 							</div>
 							<div>
 								{{ item.PRODUCT_NAME }}
 							</div>
-							<div>
-								<span class="text-secondary" style="font-size:12px" v-if="item.PRICE_DISCOUNT != 0 ">
-									<del>{{ item.PRICE.toLocaleString('ko-KR') }}원</del>
-								</span>
-								<span>{{ item.FINAL_PRICE.toLocaleString('ko-KR') }}원</span>
+							<div class="d-flex justify-content-between align-items-center">
+								<div>
+									<span>{{ item.FINAL_PRICE.toLocaleString('ko-KR') }}원</span>
+									<span class="text-secondary" style="font-size:12px" v-if="item.PRICE_DISCOUNT != 0 ">
+										<del>{{ item.PRICE.toLocaleString('ko-KR') }}원</del>
+									</span>
+								</div>
+								<span v-if="item.PRICE_DISCOUNT"
+								 style="font-size:10px;" class="text-danger">{{ item.PRICE_DISCOUNT }}% 할인중</span>
 							</div>
 						</router-link>
 					</div>

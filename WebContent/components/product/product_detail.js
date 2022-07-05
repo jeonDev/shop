@@ -49,7 +49,8 @@ const productComponent = Vue.component('product-detail-form', {
 								가격
 							</div>
 							<div class="col-sm-9">
-								<span>{{ Number(productInfo.PRICE).toLocaleString('ko-KR') }}₩</span>
+								<span>{{Number(productInfo.FINAL_PRICE).toLocaleString('ko-KR')}}₩</span>
+								<span v-if="productInfo.TOP_PRICE_DISCOUNT"><del>{{ Number(productInfo.PRICE).toLocaleString('ko-KR') }}₩</del></span>
 								<span class="text-danger font-weight-bold pl-2" v-if="productInfo.TOP_PRICE_DISCOUNT">{{ productInfo.TOP_PRICE_DISCOUNT }}% 할인 중</span>
 							</div>
 						</div>
@@ -368,7 +369,19 @@ const productComponent = Vue.component('product-detail-form', {
 						data.push({"product_no" : item.product_no, "product_cnt" : item.product_cnt});
 					});
 					
-					this.$router.push({name: "pay-list-form", params:{payInfo: "product"}, query: {productPayInfo: JSON.stringify(data)} });
+					httpRequest({
+						url: "product/stock/check",
+						method: "POST",
+						responseType: "json",
+						data: data
+					})
+					.then((rs) => {
+						this.$router.push({name: "pay-list-form", params:{payInfo: "product"}, query: {productPayInfo: JSON.stringify(data)} });
+					})
+					.catch((error) => {
+						alert(error.data.message);
+					});
+					
 				}
 			}
 		},

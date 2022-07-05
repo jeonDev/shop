@@ -77,7 +77,6 @@ const payListComponent = Vue.component('pay-list-form', {
 				<div>
 					<ul class="text-secondary" style="font-size: 12px;">
 						<li>SHOP은 전 상품 무료 배송입니다.</li>
-						<li>2개 이상의 브랜드를 주문하신 경우, 개별 배송됩니다.</li>
 						<li>배송지 정보는 반드시 입력해주셔야 합니다.</li>
 					</ul>
 				</div>
@@ -294,7 +293,7 @@ const payListComponent = Vue.component('pay-list-form', {
 				
 				// import 결제 진행.
 				// 실제 결제 시, Test 제거
-				paymentImport(rs.data.orderInfo, data);
+				paymentImportTest(rs.data.orderInfo, data);
 				
 			})
 			.catch((error) => {

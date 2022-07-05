@@ -382,23 +382,3 @@ const adminProductSizeComponent = Vue.component('admin-product-size-form', {
 		this.getProductList();
 	}
 });
-
-/*
-1. PRODUCT_SIZE select box 추가! X
-	└ 생각해보니 select 박스는 추가하면 사이즈 추가할 떄 입력을 못함; 물론 수정도..,
-2. DEL_YN 삭제버튼 추가!
-	:TODO 삭제된 사이즈 상품 구분짓기 + 다시 추가하기 기능
-	
-3. 사이즈 추가 버튼
-	--> 추가를 누르고 값을 입력하면 v-if가 true가 되가지고,,,, ㅠㅠ
-	어떻게 할지 더 고민좀,,,
-	
-	방향은 :::::::: 
-					① 사이즈 추가 버튼 클릭
-					② 사이즈 / 할인율 / 재고 입력
-					③ 저장버튼 클릭
-						-> data-idx 받아서 this.productList[idx] 이런식으로 하려 함.
-	문제!!!
-		-> v-if를 쓰니.. 할인율이 0이면 안되는듯?
-					
- * */

@@ -136,6 +136,7 @@ const productQnaComponent = Vue.component('product-qna-form', {
 			.then((rs) => {
 				alert(rs.data.message);
 				this.getQnaList();
+				this.qnaTitle = "";
 			})
 			.catch((error) => {
 				alert(error.data.message);

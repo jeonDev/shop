@@ -72,10 +72,12 @@ const adminProductComponent = Vue.component('admin-product-form', {
 									{{ dateFormat(item.REP_DTTM) }}
 								</td>
 								<td class="text-center align-middle">
-									<span>{{ item.FINAL_PRICE.toLocaleString('ko-KR') }}</span>
-									<span class="text-secondary" style="font-size:10px" v-if="item.DISCOUNT_YN == 'Y'">
-										<del>{{ item.TOT_PRICE.toLocaleString('ko-KR') }}</del>
-									</span>
+									<div>
+										<span>{{ item.FINAL_PRICE.toLocaleString('ko-KR') }}원</span>
+										<span class="text-secondary" style="font-size:12px" v-if="item.PRICE_DISCOUNT != 0 ">
+											<del>{{ item.PRICE.toLocaleString('ko-KR') }}원</del>
+										</span>
+									</div>
 								</td>
 								<td class="text-center align-middle">
 									{{ item.PRODUCT_VIEW.toLocaleString('ko-KR') }}

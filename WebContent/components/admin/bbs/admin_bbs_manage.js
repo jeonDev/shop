@@ -96,8 +96,8 @@ const adminBbsManageComponent = Vue.component('admin-bbs-manage-form', {
 				id: "bbs-type",
 				name: "bbs-type",
 				class: "form-control",
-				allView: false,
-				allViewNm: "",
+				allView: true,
+				allViewNm: "전체",
 				selected: "",
 				options: []
 			},
@@ -168,11 +168,11 @@ const adminBbsManageComponent = Vue.component('admin-bbs-manage-form', {
 			let bbsType = this.bbsType;
 			let wrtState = this.wrtState;
 			
-			let data = {"bbs_type" : bbsType
-					, "curPage" : curPage
+			let data = {"curPage" : curPage
 					, "pageUnit" : pageUnit
 					, "blockUnit" : blockUnit};
 			
+			if(bbsType) data.bbs_type = bbsType;
 			if(title) data.title = title;
 			if(wrtState) data.wrt_state = wrtState;
 			
@@ -237,7 +237,6 @@ const adminBbsManageComponent = Vue.component('admin-bbs-manage-form', {
 		this.bbsType = this.$route.query.bbsType;
 		this.wrtState = this.$route.query.wrtState;
 		this.page.curPage = this.$route.query.curPage;
-		if(!this.bbsType) this.bbsType = "NOTICE";
 		this.getBbsList();
 		this.getWrtStateMenuList();
 		this.getBbsTypeMenuList();
