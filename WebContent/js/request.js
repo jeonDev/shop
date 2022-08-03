@@ -32,7 +32,7 @@ httpRequest.interceptors.response.use(
 	async function (error) {
 		
 		const originalRequest = error.config;
-		//console.log(originalRequest);
+		
 		if(error.response.status === 401 && !originalRequest._retry){
 			console.log("토큰이 만료되어, 리프레시 토큰으로 재 요청 하는 중.");
 			await axios({

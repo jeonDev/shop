@@ -4,6 +4,15 @@ const adminProductManageComponent = Vue.component('admin-product-form', {
 			<div class="mb-5">
 				<h2>상품 관리</h2>
 			</div>
+			
+			<!-- excel Upload 버튼 -->
+			<div class="d-flex justify-content-end">
+				<div class="p-2">
+					<input type="file" id="excel-file-upload" class="display-none" @input="excelUpload"/>
+					<label for="excel-file-upload" class="btn btn-dark m-0">Excel 등록</label>
+				</div>
+			</div>
+				
 			<div id="admin-product-manage" class="border p-3 mb-5">
 				
 				<div class="row mb-2">
@@ -496,6 +505,41 @@ const adminProductManageComponent = Vue.component('admin-product-form', {
 			let content = saveEditor("content");
 			
 			return content;
+		},
+		excelUpload(e){
+			let file 	 = e.target.files;
+			
+			let extImgs = ['xlsx'];
+			
+			let fileName = file[0].name;
+			let fileDot = fileName.lastIndexOf(".");
+			let fileExt = fileName.substring(fileDot + 1, fileName.length).toLowerCase();
+			
+			if(!extImgs.includes(fileExt)){
+				alert("Excel 파일만 등록가능합니다.");
+				return false;
+			}
+			
+			let formData = new FormData();
+			
+			formData.append("file", file[0]);
+			
+			httpRequest({
+				url: "admin/product/create/excel",
+				method: "POST",
+				processData: false,
+				contentType: false,
+				header: {"Content-Type" : "multipart/form-data"},
+				data: formData
+			})
+			.then((rs) => {
+				alert(rs.data.message);
+			})
+			.catch((error) => {
+				console.log(error);
+				alert(error.data.message);
+			});
+			
 		},
 		async init(){
 			this.productId = this.$route.params.productId;

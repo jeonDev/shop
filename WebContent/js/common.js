@@ -1,5 +1,5 @@
 const server = "http://localhost:8081/";
-// const server = "http://43.200.39.6:8081/";
+//const server = "http://121.164.192.162:8081/";
 
 //정규식 체크
 let idReg = /^[a-zA-Z0-9]{4,30}$/g;									// ID 정규식 (영문 숫자 4~30자)
@@ -128,6 +128,31 @@ function saveEditor(id){
 	} else {
 		return content;
 	}
+}
+
+// excel Download
+function excelDownloads(data){
+	httpRequest({
+		url: "excel/download",
+		method: "POST",
+		responseType: "blob",
+		headers : {'Content-type' : 'application/json'},
+		data: data
+	})
+	.then((rs) => {
+		console.log(rs);
+		let blob = new Blob([rs.data], {
+			type:
+				"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+		})
+		url = window.URL.createObjectURL(blob);
+		console.log(blob);
+		console.log(url);
+        window.open(url);
+	})
+	.catch((error) => {
+		console.log(error);
+	});
 }
 
 ///////////////////////////////////////////////////////////////

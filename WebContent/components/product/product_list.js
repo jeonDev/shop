@@ -2,13 +2,19 @@ const productListComponent = Vue.component('product-list-form', {
 	template: `
 		<div>
 			<!-- Category -->
-			<div class="mb-5">
+			<div class="mb-3">
 				<product-list-category-form :productType="productType"/>
+			</div>
+			
+			<!-- order -->
+			<div class="container d-flex justify-content-end mb-3" style="font-size:12px;">
+				<div :class="[order == '' ? 'text-danger' : 'text-secondary']" class="p-2 a" @click="orderChange('')">최신순</div>
+				<div :class="[order == 'product_view' ? 'text-danger' : 'text-secondary']" class="p-2 a" @click="orderChange('product_view')">조회순</div>
+				<div :class="[order == 'sales_rate' ? 'text-danger' : 'text-secondary']" class="p-2 a" @click="orderChange('sales_rate')">판매순</div>
 			</div>
 			
 			<!-- Product List -->
 			<div class="container">
-			<!-- justify-content-center : 4건 시, 밑에 중앙정렬..-->
 				<div id="product-list" class="list-group list-group-horizontal justify-content-center" style="flex-wrap:wrap">
 					<div v-for="(item, idx) in productList" class="list-group-item w-30 m-2">
 						<router-link :to="{name: 'product-detail-form', params: { productId : item.PRODUCT_ID } }" class="a">
@@ -47,6 +53,7 @@ const productListComponent = Vue.component('product-list-form', {
 		$route() {
 			this.productType = this.$route.query.productType;
 			this.page.curPage = this.$route.query.curPage;
+			this.order = this.$route.query.order;
 			this.getProductList();
 		}
 	},
@@ -54,6 +61,7 @@ const productListComponent = Vue.component('product-list-form', {
 		return{
 			productList: [],
 			productType: "",
+			order : "",
 			page: {
 				curPage: 1,	// 현재페이지
 				pageUnit: 9,	// 한 페이지 출력 건 수
@@ -63,10 +71,15 @@ const productListComponent = Vue.component('product-list-form', {
 	},
 	methods : {
 		getProductList(){
+			
+			let order = this.order;
+			
 			let data = {curPage: this.page.curPage,
 					pageUnit: this.page.pageUnit,
 					blockUnit: this.page.blockUnit,
 					productType: this.productType};
+			
+			if(order) data.order = order;
 			
 			httpRequest({
 				url: "product/list",
@@ -91,6 +104,15 @@ const productListComponent = Vue.component('product-list-form', {
 			
 			moveAnimate("product-list");
 		},
+		orderChange(order){
+			if(order == this.order) return false;
+			
+			let query = Object.assign({}, this.$route.query);
+			query.order = order;
+			this.$router.push({ query });
+			
+			moveAnimate("product-list");
+		},
 		imgSrc(src){
 			return server + src;
 		}
@@ -98,6 +120,7 @@ const productListComponent = Vue.component('product-list-form', {
 	created() {
 		this.productType = this.$route.query.productType;
 		this.page.curPage = this.$route.query.curPage;
+		this.order = this.$route.query.order;
 		this.getProductList();
 	}
 });

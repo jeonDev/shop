@@ -42,7 +42,7 @@ const basketComponent = Vue.component('basket-form', {
 						<tbody v-if="basketList.length > 0">
 							<tr v-for="(item, idx) in basketList" data-basket="item.BASKET_NO" >
 								<td class="text-center align-middle">
-									<input type="checkbox" :id="item.BASKET_NO" class="label-checkbox" v-model="item.CHK_YN">
+									<input type="checkbox" :id="item.BASKET_NO" class="label-checkbox" v-model="item.CHK_YN" :disabled="item.BASKET_CNT_CHK == 0">
 								</td>
 								<td class="align-middle">
 									<div class="d-flex">
@@ -61,6 +61,9 @@ const basketComponent = Vue.component('basket-form', {
 													<span>{{ item.PRODUCT_SIZE }}</span>
 													<span> / {{ item.STOCK_CHK_NM }}</span>
 													<span v-if="item.PRICE_DISCOUNT > 0"> / {{ item.PRICE_DISCOUNT }}% 할인 중.</span>
+												</div>
+												<div class="text-danger" v-if="item.BASKET_CNT_CHK == 0">
+													상품재고가 선택한 수량보다 적습니다.({{item.TOT_PRODUCT_CNT}})
 												</div>
 											</router-link>
 										</div>

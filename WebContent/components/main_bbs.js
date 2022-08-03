@@ -3,7 +3,7 @@ Vue.component('main-bbs', {
 		<div>
 			<div class="d-flex">
 				<div class="p-2">
-					<h4>게시판</h4>
+					<h4>공지사항</h4>
 				</div>
 				<div class="ml-auto p-2">
 					<span>

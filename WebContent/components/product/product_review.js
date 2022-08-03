@@ -22,7 +22,7 @@ const productReviewComponent = Vue.component('product-review-form', {
 						<div class="border mt-2" v-for="(item, idx) in reviewList">
 							<div class="d-flex justify-content-start p-3">
 								<h3 class="d-inline-block">
-									{{ item.USR_NM }}
+									{{ item.USR_NM }} 
 								</h3>
 								<span class="star-bar">
 									<span v-bind:style="{width: item.SCOPE_PER + '%'}"/>
@@ -31,10 +31,13 @@ const productReviewComponent = Vue.component('product-review-form', {
 									({{ item.SCOPE }} / 5)
 								</h4>
 							</div>
+							<div class="pl-3 text-secondary" style="font-size:12px">
+								Size : {{item.PRODUCT_SIZE}}
+							</div>
 							<div class="p-3" v-html="item.TITLE">
 								
 							</div>
-							<div class="p-3" v-if="item.REVIEW_TYPE='PR002'">
+							<div class="p-3" v-if="item.REVIEW_TYPE == 'PR002'">
 								<img class="img-rounded w-25" :src="img" v-for="img in reviewImgs(item.FILE_SRC, item.FILE_REAL_NM)"/>
 							</div>
 							<!--
@@ -42,6 +45,11 @@ const productReviewComponent = Vue.component('product-review-form', {
 								{{item.CONTENT}}
 							</div>
 							-->
+							<div class="p-3">
+								<button class="btn btn-outline-dark" @click="reviewGoods(item.REVIEW_NO)">
+									좋아요({{item.GOODS_CNT}})
+								</button>
+							</div>
 						</div>
 						<br/><br/>
 					</div>
@@ -126,7 +134,8 @@ const productReviewComponent = Vue.component('product-review-form', {
 					, "product_id" : this.productId
 					, "curPage" : curPage
 					, "pageUnit" : pageUnit
-					, "blockUnit" : blockUnit};
+					, "blockUnit" : blockUnit
+					, "mainYn" : "N"};
 			
 			httpRequest({
 				url: "product/review/list",
@@ -153,6 +162,48 @@ const productReviewComponent = Vue.component('product-review-form', {
 			this.getReviewList();
 			
 			moveAnimate("review-content");
+		},
+		reviewGoods(reviewNo){
+			
+			httpRequest({
+				url: "user/product/review/chk/" + reviewNo,
+				method: "GET",
+				responseType: "json"
+			})
+			.then((rs) => {
+				
+				let code = rs.data.code;
+				let message = rs.data.message;
+			
+				if(!confirm(message)) return false;
+			
+				let url = "";
+				if(code == "0000"){
+					url = "user/product/review/delete/" + reviewNo;
+				} else {
+					url = "user/product/review/insert/" + reviewNo;
+				}
+				
+				this.reviewStateUpdate(url);
+			})
+			.catch((error) => {
+				alert(error.data.message);
+			});
+			
+		},
+		reviewStateUpdate(url){
+			httpRequest({
+				url: url,
+				method: "POST",
+				responseType: "json"
+			})
+			.then((rs) => {
+				this.getReviewList();
+				alert(rs.data.message);
+			})
+			.catch((error) => {
+				alert(error.data.message);
+			});
 		}
 	},
 	created() {

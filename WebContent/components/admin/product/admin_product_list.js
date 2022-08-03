@@ -9,9 +9,6 @@ const adminProductComponent = Vue.component('admin-product-form', {
 				<!-- 등록버튼  및 조회조건-->
 				<div class="d-flex justify-content-end mb-3">
 					<div class="p-2">
-						<select-box :obj="orderObj" @input="changeProductOrder"/>
-					</div>
-					<div class="p-2">
 						<select-box :obj="obj" @input="changeCategory"/>
 					</div>
 					<div class="p-2">
@@ -19,10 +16,22 @@ const adminProductComponent = Vue.component('admin-product-form', {
 					</div>
 					<div class="p-2">
 						<button class="btn btn-dark"
+							@click="excelDownload">Excel Download</button>
+					</div>
+					<div class="p-2">
+						<button class="btn btn-dark"
 							@click="productManage('create')">상품등록</button>
 					</div>
 				</div>
-				
+				<!-- 정렬 순서 -->
+				<div>
+					<!-- order -->
+					<div class="container d-flex justify-content-end mb-3" style="font-size:12px;">
+						<div :class="[order == '' ? 'text-danger' : 'text-secondary']" class="p-2 a" @click="orderChange('')">최신순</div>
+						<div :class="[order == 'product_view' ? 'text-danger' : 'text-secondary']" class="p-2 a" @click="orderChange('product_view')">조회순</div>
+						<div :class="[order == 'sales_rate' ? 'text-danger' : 'text-secondary']" class="p-2 a" @click="orderChange('sales_rate')">판매순</div>
+					</div>
+				</div>
 				<div>
 					<table class="table table-bordered not-table-hover">
 						<colgroup>
@@ -118,15 +127,18 @@ const adminProductComponent = Vue.component('admin-product-form', {
 			this.productState = this.$route.query.productState;
 			this.productOrder = this.$route.query.productOrder;
 			this.page.curPage = this.$route.query.curPage;
+			this.order = this.$route.query.order;
 			this.getProductList();
 		}
 	},
 	data(){
 		return{
 			productList: [],
+			excelProductList : [],
 			productType: "",
 			productState: "",
 			productOrder: "",
+			order : "",
 			page: {
 				curPage: 1,	// 현재페이지
 				pageUnit: 10,	// 한 페이지 출력 건 수
@@ -149,18 +161,6 @@ const adminProductComponent = Vue.component('admin-product-form', {
 				allViewNm : "판매상태 선택",
 				selected: "",
 				options : []
-			},
-			orderObj : {
-				id : "product-order",
-				name : "product-order",
-				class : "form-control",
-				allView : true,
-				allViewNm : "정렬순서 선택",
-				selected: "",
-				options : [
-					{CMN_CD : "sales_rate", CMN_NM : "판매량"},
-					{CMN_CD : "product_view", CMN_NM : "조회수"},
-				]
 			}
 		}
 	},
@@ -217,7 +217,7 @@ const adminProductComponent = Vue.component('admin-product-form', {
 			let blockUnit = this.page.blockUnit;
 			let productType = this.productType;
 			let productState = this.productState;
-			let productOrder = this.productOrder;
+			let order = this.order;
 			
 			let data = {curPage: curPage,
 					pageUnit: pageUnit,
@@ -228,8 +228,8 @@ const adminProductComponent = Vue.component('admin-product-form', {
 				data.productType = productType;
 			if(productState != '')
 				data.productState = productState;
-			if(productOrder != '')
-				data.order = productOrder;
+			if(order != '')
+				data.order = order;
 			
 			httpRequest({
 				url: "product/list",
@@ -271,12 +271,11 @@ const adminProductComponent = Vue.component('admin-product-form', {
 			query.curPage = 1;
 			this.$router.push({ query });
 		},
-		changeProductOrder(typeCd){
-			if(typeCd == this.productOrder) return false;
+		orderChange(order){
+			if(order == this.order) return false;
 			
 			let query = Object.assign({}, this.$route.query);
-			query.productOrder = typeCd;
-			query.curPage = 1;
+			query.order = order;
 			this.$router.push({ query });
 		},
 		imgSrc(src){
@@ -292,6 +291,28 @@ const adminProductComponent = Vue.component('admin-product-form', {
 		// 상품 관리
 		productManage(productId) {
 			this.$router.push({name: "admin-product-manage-form", params:{productId: productId}});
+		},
+		excelDownload(){
+			let data = {};
+			let header = ["상품명", "상품사이즈", "등록일", "가격", "조회수", "판매량"];
+			let body = [];
+			
+			$.each(this.productList, function(idx, item){
+				body.push({
+					"product_name" : item.PRODUCT_NAME,
+					"product_size" : item.PRODUCT_SIZE,
+					"rep_dttm" : item.REP_DTTM,
+					"final_price" : item.FINAL_PRICE,
+					"product_view" : item.PRODUCT_VIEW,
+					"sales_rate" : item.SALES_RATE
+				});
+			})
+			
+			data.header = header;
+			data.body = body;
+			data.filename = "상품 리스트 정보";
+			
+			excelDownloads(data);
 		}
 	},
 	created() {
@@ -299,8 +320,7 @@ const adminProductComponent = Vue.component('admin-product-form', {
 		this.productType = this.$route.query.productType;
 		this.productOrder = this.$route.query.productOrder;
 		this.page.curPage = this.$route.query.curPage;
-		
-		this.orderObj.selected = this.productOrder;
+		this.order = this.$route.query.order;
 		
 		this.getCategoryList();
 		this.getProductStateMenuList();

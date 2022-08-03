@@ -41,8 +41,9 @@ const adminBbsManageComponent = Vue.component('admin-bbs-manage-form', {
 							<colgroup>
 								<col width="10px">
 								<col width="10%">
-								<col width="55%">
+								<col width="45%">
 								<col width="13%">
+								<col width="10%">
 								<col width="10%">
 								<col width="20%">
 							</colgroup>
@@ -52,6 +53,7 @@ const adminBbsManageComponent = Vue.component('admin-bbs-manage-form', {
 									<th>구분</th>
 									<th>제목</th>
 									<th>작성자</th>
+									<th>작성상태</th>
 									<th>조회수</th>
 									<th>작성일자</th>
 								</tr>
@@ -63,6 +65,7 @@ const adminBbsManageComponent = Vue.component('admin-bbs-manage-form', {
 									<td class="text-center">{{item.BBS_TYPE_NM}}</td>
 									<td>{{item.TITLE}}</td>
 									<td class="text-center">{{item.USR_NM}}</td>
+									<td class="text-center">{{item.WRT_STATE_NM}}</td>
 									<td class="text-center">{{item.VIEW_CNT}}</td>
 									<td class="text-center">{{item.SYS_ENR_DTTM}}</td>
 								</tr>

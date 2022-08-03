@@ -11,7 +11,7 @@ const adminStatisticsComponent = Vue.component('admin-statistics-form', {
 					<div class="p-4">
 						<h2>① 카테고리별 판매량(판매금액)</h2>
 					</div>
-					<div>
+					<div style="overflow-x:auto;">
 						<table class="table table-bordered text-center">
 							<thead>
 								<tr>
@@ -44,7 +44,7 @@ const adminStatisticsComponent = Vue.component('admin-statistics-form', {
 					<div class="p-4">
 						<h2>② 월별 판매량(판매금액)</h2>
 					</div>
-					<div>
+					<div style="overflow-x:auto;">
 						<table class="table table-bordered text-center">
 							<thead>
 								<th></th>
@@ -75,7 +75,7 @@ const adminStatisticsComponent = Vue.component('admin-statistics-form', {
 					<div class="p-4">
 						<h2>③ 사용자 성별 판매량</h2>
 					</div>
-					<div>
+					<div style="overflow-x:auto;">
 						<table class="table table-bordered text-center">
 							<colgroup>
 								<col width="10%"/>

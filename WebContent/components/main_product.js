@@ -52,7 +52,7 @@ Vue.component('main-product', {
 	methods : {
 		getProductList(){
 			let data = {"curPage" : 1
-						, "pageUnit" : 20, "blockUnit" : 1
+						, "pageUnit" : 15, "blockUnit" : 1
 						, "order" : "sales_rate"};
 			
 			httpRequest({

@@ -17,6 +17,10 @@ const indexComponent = Vue.component('index-form', {
 					<main-bbs></main-bbs>
 				</div>
 			</div>
+			<div class="row mb-3 mt-5">
+				<!-- 인기 상품 후기 -->
+				<main-product-review></main-product-review>
+			</div>
 		</div>
 	`
 });
